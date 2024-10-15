@@ -8,28 +8,23 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Main extends JFrame
-{
-    private Image backgroundImage;
+public class Main extends JFrame {
+    private Image backgroundImage; // background image variable
 
-    public Main()
-    {
+    public Main() {
         // title of GUI
         setTitle("UFO SIGHTING DATA 2005-2010");
 
-        // set background image
-        try
-        {
+        // read and set background image
+        try {
             backgroundImage = ImageIO.read(new File("alienbackground.jpg"));
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         // create start panel
-        JPanel startPanel = new JPanel()
-        {
+        JPanel startPanel = new JPanel() {
+            // puts background image on panel
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -51,18 +46,15 @@ public class Main extends JFrame
         //----------------------------------Add action listeners to the buttons-----------------------------------------
 
         // DATA BUTTON
-        rawDataButton.addActionListener(new ActionListener()
-        {
+        rawDataButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TablePanel(); // Show the table GUI
-                // Add functionality to show raw data here
+                new TablePanel(); //call tablePanel
             }
         });
 
         // STATISTICS BUTTON
-        statisticsButton.addActionListener(new ActionListener()
-        {
+        statisticsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "Statistics button clicked!");
@@ -71,8 +63,7 @@ public class Main extends JFrame
         });
 
         // VISUALIZATION BUTTON
-        visualizationButton.addActionListener(new ActionListener()
-        {
+        visualizationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "Visualization button clicked!");
@@ -96,17 +87,15 @@ public class Main extends JFrame
         // close
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // set window size
-        setSize(400, 400);
+        setSize(400, 600);
         // center window
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     // make startPanel buttons round!
-    private JButton roundedButton(String text)
-    {
-        JButton button = new JButton(text)
-        {
+    private JButton roundedButton(String text) {
+        JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
                 //set color to white and round buttons
@@ -116,17 +105,73 @@ public class Main extends JFrame
             }
         };
 
-        button.setPreferredSize(new Dimension(200, 50)); // button size
+        button.setPreferredSize(new Dimension(600, 50)); // button size
         button.setAlignmentX(Component.CENTER_ALIGNMENT); // center align
         button.setFont(button.getFont().deriveFont(Font.BOLD)); // bold font
         button.setBorderPainted(false); // - border
-       // button.setFocusPainted(false); // - outline
         button.setContentAreaFilled(false); // allows customization
         return button;
     }
 
     public static void main(String[] args)
     {
-        new Main();
+        // instantiate and call splashScreen
+        splashScreen splash = new splashScreen();
+        splash.showSplash();
+
+        // wait 7 secs before main window shows
+        new Timer(8000, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                splash.dispose(); // close the splashScreen
+                new Main(); // open main window
+            }
+        }).start();
     }
+}
+//------------------------------------ Splash Screen Implementation --------------------------------------------------
+    class splashScreen extends JFrame
+    {
+        // variables
+        private JLabel messageLabel;
+        private Timer typingTimer;
+        private String message = "Loading Data from the National UFO Reporting Center...";
+        private int index = 0;
+
+        public splashScreen()
+        {
+            // create window
+            setUndecorated(true);
+            setSize(900, 300);
+            setLocationRelativeTo(null);
+            messageLabel = new JLabel("", SwingConstants.CENTER);
+            messageLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
+            messageLabel.setForeground(Color.CYAN);
+            messageLabel.setBackground(Color.BLACK);
+            messageLabel.setOpaque(true);
+            add(messageLabel);
+            setVisible(true);
+        }
+
+        public void showSplash()
+        {
+            typingTimer = new Timer(120, new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    if (index < message.length())
+                    {
+                        messageLabel.setText(messageLabel.getText() + message.charAt(index));
+                        index++;
+                    } else
+                    {
+                        typingTimer.stop(); // stop when full message is displayed
+                    }
+                }
+            });
+            typingTimer.start();
+        }
 }

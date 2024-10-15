@@ -95,11 +95,17 @@ public class TablePanel extends JFrame
 
         // create/add area summary field
         JTextArea summaryArea = new JTextArea(record[6]);
-        summaryArea.setLineWrap(true); //  line wrapping so txt wont disappear
-        summaryArea.setEditable(false); // non-editable
+        summaryArea.setLineWrap(true); // enable line wrapping
+        summaryArea.setWrapStyleWord(true); // wrap on word boundaries
+        summaryArea.setEditable(false); // make non-editable
         summaryArea.setBackground(new Color(230, 230, 255)); // light purple background color
+
+        // add summaryArea to scrollPane -- fixes bug where summary txt ets cut off
+        JScrollPane scrollPane = new JScrollPane(summaryArea);
+        scrollPane.setPreferredSize(new Dimension(380, 100)); // adjust size to fit dialog
+
         detailsPanel.add(createLabeledComponent("Summary:", "", false)); // add label and bold
-        detailsPanel.add(summaryArea); // add to details panel
+        detailsPanel.add(scrollPane); // add the scroll pane to the details panel
 
         // create detailsDialog -- JDialog good for pop up information!
         JDialog detailsDialog = new JDialog(this, "Record Details", true); // create -- set title
@@ -108,6 +114,7 @@ public class TablePanel extends JFrame
         detailsDialog.setLocationRelativeTo(this); // center in main frame
         detailsDialog.setVisible(true);
     }
+
 
     // func adds label to value
     private JPanel createLabeledComponent(String label, String value, boolean bold)

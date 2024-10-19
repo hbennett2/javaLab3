@@ -1,5 +1,3 @@
-// Hadley Bennett - UFO Sighting Data Visualization
-// Data Citation: https://www.kaggle.com/datasets/NUFORC/ufo-sightings?resource=download&select=complete.csv
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,26 +7,34 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Main extends JFrame {
+
     private Image backgroundImage; // background image variable
 
-    public Main() {
+    public Main()
+    {
         // title of GUI
         setTitle("UFO SIGHTING DATA 2005-2010");
 
         // read and set background image
-        try {
+        try
+        {
             backgroundImage = ImageIO.read(new File("alienbackground.jpg"));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 
         // create start panel
-        JPanel startPanel = new JPanel() {
+        JPanel startPanel = new JPanel()
+        {
             // puts background image on panel
             @Override
-            protected void paintComponent(Graphics g) {
+            protected void paintComponent(Graphics g)
+            {
                 super.paintComponent(g);
-                if (backgroundImage != null) {
+                if (backgroundImage != null)
+                {
                     g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
             }
@@ -38,47 +44,25 @@ public class Main extends JFrame {
         startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.Y_AXIS));
         startPanel.setOpaque(false); // transparent panel
 
-        // create buttons for startPanel
-        JButton rawDataButton = roundedButton("Data");
-        JButton statisticsButton = roundedButton("Statistics");
-        JButton visualizationButton = roundedButton("Visualization");
+        // create button for startPanel
+        JButton enterDataButton = roundedButton("Enter Data");
 
-        //----------------------------------Add action listeners to the buttons-----------------------------------------
+        //----------------------------------Add action listener to the button-----------------------------------------
 
-        // DATA BUTTON
-        rawDataButton.addActionListener(new ActionListener() {
+        // ENTER DATA BUTTON
+        enterDataButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                new TablePanel(); //call tablePanel
-            }
-        });
-
-        // STATISTICS BUTTON
-        statisticsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Statistics button clicked!");
-                // Add functionality to show statistics here
-            }
-        });
-
-        // VISUALIZATION BUTTON
-        visualizationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Visualization button clicked!");
-                // Add functionality to show visualization here
+            public void actionPerformed(ActionEvent e)
+            {
+                showMainPanel(); // display all panels in one window
             }
         });
         //-------------------------------------------------------------------------------------------------------------
 
-        // manage spacing between buttons
+        // manage spacing for the button
         startPanel.add(Box.createVerticalGlue());
-        startPanel.add(rawDataButton);
-        startPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        startPanel.add(statisticsButton);
-        startPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        startPanel.add(visualizationButton);
+        startPanel.add(enterDataButton);
         startPanel.add(Box.createVerticalGlue());
 
         // add startPanel to frame
@@ -93,7 +77,43 @@ public class Main extends JFrame {
         setVisible(true);
     }
 
-    // make startPanel buttons round!
+    // function to show main panel with all panels and filters
+    private void showMainPanel()
+    {
+        // create a new window (JFrame) for the main panel
+        JFrame mainFrame = new JFrame("UFO Data Analysis");
+        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // close this window only
+
+        // create a panel for filters (you can add filter components here)
+        JPanel filterPanel = new JPanel();
+        filterPanel.setLayout(new FlowLayout());
+        filterPanel.add(new JLabel("Filter Options:")); // add a label for filter options
+
+        // create a container panel that will hold all subpanels (table, stats, chart)
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout());
+
+        // create instances of the panels
+        StatsPanel statsPanel = new StatsPanel(); // instantiate the statsPanel
+        TablePanel tablePanel = new TablePanel(statsPanel); // instantiate the tablePanel
+
+        // add each panel to the content panel
+        contentPanel.add(tablePanel, BorderLayout.NORTH); // tablePanel at the top
+        contentPanel.add(statsPanel, BorderLayout.CENTER); // statsPanel in the center
+        // if you want to add chartPanel, uncomment the line below:
+        // contentPanel.add(new ChartPanel(), BorderLayout.SOUTH); // chartPanel at the bottom
+
+        // add everything to the main frame
+        mainFrame.add(filterPanel, BorderLayout.NORTH); // filters at the top
+        mainFrame.add(contentPanel, BorderLayout.CENTER); // main content area with panels
+
+        // set window size and location
+        mainFrame.setSize(800, 600); // set the size of the window
+        mainFrame.setLocationRelativeTo(null); // center window on screen
+        mainFrame.setVisible(true); // make the window visible
+    }
+
+    // make startPanel button round!
     private JButton roundedButton(String text) {
         JButton button = new JButton(text) {
             @Override
@@ -120,58 +140,66 @@ public class Main extends JFrame {
         splash.showSplash();
 
         // wait 7 secs before main window shows
-        new Timer(8000, new ActionListener()
+        Timer timer = new Timer(1000, new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 splash.dispose(); // close the splashScreen
                 new Main(); // open main window
+                ((Timer) e.getSource()).stop(); // stop timer
             }
-        }).start();
+        });
+        timer.setRepeats(false); // no repeated timers
+        timer.start();
     }
 }
+
 //------------------------------------ Splash Screen Implementation --------------------------------------------------
-    class splashScreen extends JFrame
+class splashScreen extends JFrame
+{
+    // variables
+    private JLabel messageLabel;
+    private Timer typingTimer;
+    private String message = "Loading Data from the National UFO Reporting Center...";
+    private int index = 0;
+
+    public splashScreen()
     {
-        // variables
-        private JLabel messageLabel;
-        private Timer typingTimer;
-        private String message = "Loading Data from the National UFO Reporting Center...";
-        private int index = 0;
+        // create window
+        setUndecorated(true);
+        setSize(900, 300);
+        setLocationRelativeTo(null);
+        messageLabel = new JLabel("", SwingConstants.CENTER);
+        // customizes label
+        messageLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
+        messageLabel.setForeground(Color.CYAN);
+        messageLabel.setBackground(Color.BLACK);
+        messageLabel.setOpaque(true);
+        add(messageLabel);
+        setVisible(true);
+    }
 
-        public splashScreen()
+    public void showSplash()
+    {
+        // sets typing speed
+        typingTimer = new Timer(100, new ActionListener()
         {
-            // create window
-            setUndecorated(true);
-            setSize(900, 300);
-            setLocationRelativeTo(null);
-            messageLabel = new JLabel("", SwingConstants.CENTER);
-            messageLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
-            messageLabel.setForeground(Color.CYAN);
-            messageLabel.setBackground(Color.BLACK);
-            messageLabel.setOpaque(true);
-            add(messageLabel);
-            setVisible(true);
-        }
-
-        public void showSplash()
-        {
-            typingTimer = new Timer(120, new ActionListener()
+            // traverse message to type
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                @Override
-                public void actionPerformed(ActionEvent e)
+                if (index < message.length())
                 {
-                    if (index < message.length())
-                    {
-                        messageLabel.setText(messageLabel.getText() + message.charAt(index));
-                        index++;
-                    } else
-                    {
-                        typingTimer.stop(); // stop when full message is displayed
-                    }
+                    messageLabel.setText(messageLabel.getText() + message.charAt(index));
+                    index++;
+                } else
+                {
+                    typingTimer.stop(); // stop when full message is displayed
                 }
-            });
-            typingTimer.start();
-        }
+            }
+        });
+        typingTimer.start();
+    }
 }
+

@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Main extends JFrame {
-
+public class Main extends JFrame
+{
     private Image backgroundImage; // background image variable
 
     public Main()
@@ -95,13 +95,13 @@ public class Main extends JFrame {
 
         // create instances of the panels
         StatsPanel statsPanel = new StatsPanel(); // instantiate the statsPanel
-        TablePanel tablePanel = new TablePanel(statsPanel); // instantiate the tablePanel
+        CreateChartPanel chartPanel = new CreateChartPanel();
+        TablePanel tablePanel = new TablePanel(statsPanel, chartPanel); // instantiate the tablePanel
 
         // add each panel to the content panel
         contentPanel.add(tablePanel, BorderLayout.NORTH); // tablePanel at the top
         contentPanel.add(statsPanel, BorderLayout.CENTER); // statsPanel in the center
-        // if you want to add chartPanel, uncomment the line below:
-        // contentPanel.add(new ChartPanel(), BorderLayout.SOUTH); // chartPanel at the bottom
+        contentPanel.add(chartPanel, BorderLayout.SOUTH); // chartPanel at the bottom
 
         // add everything to the main frame
         mainFrame.add(filterPanel, BorderLayout.NORTH); // filters at the top
@@ -140,7 +140,7 @@ public class Main extends JFrame {
         splash.showSplash();
 
         // wait 7 secs before main window shows
-        Timer timer = new Timer(1000, new ActionListener()
+        Timer timer = new Timer(8000, new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)

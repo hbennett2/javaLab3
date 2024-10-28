@@ -15,96 +15,96 @@ public class StatsPanel extends JPanel
     // hardcoded state stats
     private final String[] stateStats =
             {
-            "ab: # of sightings: 0",
-            "ak: # of sightings: 0",
-            "al: # of sightings: 0",
-            "ar: # of sightings: 0",
-            "az: # of sightings: 0",
-            "bc: # of sightings: 0",
-            "ca: # of sightings: 0",
-            "co: # of sightings: 0",
-            "ct: # of sightings: 0",
-            "dc: # of sightings: 0",
-            "de: # of sightings: 0",
-            "fl: # of sightings: 0",
-            "ga: # of sightings: 0",
-            "hi: # of sightings: 0",
-            "ia: # of sightings: 0",
+            "ab: # of sightings: 126",
+            "ak: # of sightings: 86",
+            "al: # of sightings: 237",
+            "ar: # of sightings: 216",
+            "az: # of sightings: 936",
+            "bc: # of sightings: 183",
+            "ca: # of sightings: 3607",
+            "co: # of sightings: 244",
+            "ct: # of sightings: 345",
+            "dc: # of sightings: 42",
+            "de: # of sightings: 67",
+            "fl: # of sightings: 1488",
+            "ga: # of sightings: 513",
+            "hi: # of sightings: 118",
+            "ia: # of sightings: 247",
             "id: # of sightings: 0",
-            "il: # of sightings: 0",
-            "in: # of sightings: 0",
-            "ks: # of sightings: 0",
-            "ky: # of sightings: 0",
-            "la: # of sightings: 0",
-            "ma: # of sightings: 0",
-            "mb: # of sightings: 0",
-            "md: # of sightings: 0",
-            "me: # of sightings: 0",
-            "mi: # of sightings: 0",
-            "mn: # of sightings: 0",
-            "mo: # of sightings: 0",
-            "ms: # of sightings: 0",
-            "mt: # of sightings: 0",
-            "nb: # of sightings: 0",
-            "nc: # of sightings: 0",
-            "nd: # of sightings: 0",
-            "ne: # of sightings: 0",
-            "nf: # of sightings: 0",
-            "nh: # of sightings: 0",
-            "nj: # of sightings: 0",
-            "nm: # of sightings: 0",
-            "ns: # of sightings: 0",
-            "nt: # of sightings: 0",
-            "nv: # of sightings: 0",
-            "ny: # of sightings: 0",
-            "oh: # of sightings: 0",
-            "ok: # of sightings: 0",
-            "on: # of sightings: 0",
-            "or: # of sightings: 0",
-            "pa: # of sightings: 0",
-            "pe: # of sightings: 0",
-            "qc: # of sightings: 0",
-            "ri: # of sightings: 0",
-            "sa: # of sightings: 0",
-            "sc: # of sightings: 0",
-            "sd: # of sightings: 0",
-            "sk: # of sightings: 0",
-            "tn: # of sightings: 0",
-            "tx: # of sightings: 0",
-            "ut: # of sightings: 0",
-            "va: # of sightings: 0",
-            "vt: # of sightings: 0",
-            "wa: # of sightings: 0",
-            "wi: # of sightings: 0",
-            "wv: # of sightings: 0",
-            "wy: # of sightings: 0",
-            "yt: # of sightings: 0"
+            "il: # of sightings: 1037",
+            "in: # of sightings: 522",
+            "ks: # of sightings: 249",
+            "ky: # of sightings: 434",
+            "la: # of sightings: 210",
+            "ma: # of sightings: 441",
+            "mb: # of sightings: 54",
+            "md: # of sightings: 269",
+            "me: # of sightings: 169",
+            "mi: # of sightings: 726",
+            "mn: # of sightings: 358",
+            "mo: # of sightings: 565",
+            "ms: # of sightings: 136",
+            "mt: # of sightings: 157",
+            "nb: # of sightings: 33",
+            "nc: # of sightings: 676",
+            "nd: # of sightings: 43",
+            "ne: # of sightings: 146",
+            "nf: # of sightings: 11",
+            "nh: # of sightings: 169",
+            "nj: # of sightings: 534",
+            "nm: # of sightings: 285",
+            "ns: # of sightings: 69",
+            "nt: # of sightings: 4",
+            "nv: # of sightings: 310",
+            "ny: # of sightings: 1041",
+            "oh: # of sightings: 696",
+            "ok: # of sightings: 246",
+            "on: # of sightings: 507",
+            "or: # of sightings: 879",
+            "pa: # of sightings: 903",
+            "pe: # of sightings: 8",
+            "qc: # of sightings: 85",
+            "ri: # of sightings: 99",
+            "sa: # of sightings: 2",
+            "sc: # of sightings: 340",
+            "sd: # of sightings: 63",
+            "sk: # of sightings: 42",
+            "tn: # of sightings: 412",
+            "tx: # of sightings: 1499",
+            "ut: # of sightings: 192",
+            "va: # of sightings: 465",
+            "vt: # of sightings: 100",
+            "wa: # of sightings: 1282",
+            "wi: # of sightings: 356",
+            "wv: # of sightings: 154",
+            "wy: # of sightings: 60",
+            "yt: # of sightings: 8"
     };
 
     // hardcoded shape stats
     private final String[] shapeStats =
             {
-            "changing: # of sightings: 0",
-            "chevron: # of sightings: 0",
-            "cigar: # of sightings: 0",
-            "circle: # of sightings: 0",
-            "cone: # of sightings: 0",
-            "cross: # of sightings: 0",
-            "cylinder: # of sightings: 0",
-            "diamond: # of sightings: 0",
-            "disk: # of sightings: 0",
-            "egg: # of sightings: 0",
-            "fireball: # of sightings: 0",
-            "flash: # of sightings: 0",
-            "formation: # of sightings: 0",
-            "light: # of sightings: 0",
-            "other: # of sightings: 0",
-            "oval: # of sightings: 0",
-            "rectangle: # of sightings: 0",
-            "sphere: # of sightings: 0",
-            "teardrop: # of sightings: 0",
-            "triangle: # of sightings: 0",
-            "unknown: # of sightings: 0"
+            "changing: # of sightings: 732",
+            "chevron: # of sightings: 285",
+            "cigar: # of sightings: 682",
+            "circle: # of sightings: 2315",
+            "cone: # of sightings: 108",
+            "cross: # of sightings: 73",
+            "cylinder: # of sightings: 401",
+            "diamond: # of sightings: 363",
+            "disk: # of sightings: 1469",
+            "egg: # of sightings: 210",
+            "fireball: # of sightings: 1465",
+            "flash: # of sightings: 493",
+            "formation: # of sightings: 732",
+            "light: # of sightings: 5690",
+            "other: # of sightings: 1834",
+            "oval: # of sightings: 1218",
+            "rectangle: # of sightings: 444",
+            "sphere: # of sightings: 1573",
+            "teardrop: # of sightings: 268",
+            "triangle: # of sightings: 2549",
+            "unknown: # of sightings: 2111"
     };
 
     public StatsPanel()
@@ -130,7 +130,6 @@ public class StatsPanel extends JPanel
         add(shapeLabel);
         add(Box.createRigidArea(new Dimension(0, 10)));
         add(yearLabel);
-        add(Box.createVerticalGlue());
     }
 
     // label customization
@@ -150,7 +149,8 @@ public class StatsPanel extends JPanel
         // update state statistics
         for (String state : stateStats)
         {
-            if (state.toLowerCase().startsWith(selectedState.toLowerCase())) {
+            if (state.toLowerCase().startsWith(selectedState.toLowerCase()))
+            {
                 stateStat = state;
                 break;
             }
@@ -159,13 +159,14 @@ public class StatsPanel extends JPanel
         // update shape statistics
         for (String shape : shapeStats)
         {
-            if (shape.toLowerCase().startsWith(selectedShape.toLowerCase())) {
+            if (shape.toLowerCase().startsWith(selectedShape.toLowerCase()))
+            {
                 shapeStat = shape;
                 break;
             }
         }
 
-        // Update labels
+        // update labels
         stateLabel.setText(stateStat);
         shapeLabel.setText(shapeStat);
     }

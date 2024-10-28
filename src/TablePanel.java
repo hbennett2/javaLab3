@@ -8,19 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class TablePanel extends JPanel {
+public class TablePanel extends JPanel
+{
     // variables
     private List<String[]> data; // holds data
     private List<Integer> recordMap; // map records to their data
     private DefaultTableModel tableModel;
     private JTable table;
     private TableRowSorter<DefaultTableModel> sorter; // sorter declaration
-    private StatsPanel statsPanel; // Reference to StatsPanel
+    private StatsPanel statsPanel;
+    private CreateChartPanel chartPanel;
+    private JComboBox<String> stateFilter;
+    private JComboBox<String> shapeFilter;
 
     // creates tablePanel
-    public TablePanel(StatsPanel statsPanel)
+    public TablePanel(StatsPanel statsPanel, CreateChartPanel chartPanel)
     {
         this.statsPanel = statsPanel;
+        this.chartPanel = chartPanel;
 
         // set layout for this JPanel
         setLayout(new BorderLayout());
@@ -31,9 +36,11 @@ public class TablePanel extends JPanel {
         recordMap = new ArrayList<>(); // initialize list
 
         // instantiate table obj-- non-editable
-        tableModel = new DefaultTableModel() {
+        tableModel = new DefaultTableModel()
+        {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(int row, int column)
+            {
                 return false; // cells non-editable
             }
         };
@@ -91,7 +98,7 @@ public class TablePanel extends JPanel {
 
         // add fields to panel -- bolded text
         detailsPanel.add(createLabeledComponent("City:", record[1], true));
-        // if duration = 0, change it to displays "concurrent"
+        // if duration = 0 --> change it to displays "concurrent"
         detailsPanel.add(createLabeledComponent("Duration (sec):", "0".equals(record[5]) ? "concurrent" : record[5], true));
         detailsPanel.add(createLabeledComponent("Summary:", record[6], false));
 
@@ -105,7 +112,8 @@ public class TablePanel extends JPanel {
     }
 
     // func adds label to value
-    private JPanel createLabeledComponent(String label, String value, boolean bold) {
+    private JPanel createLabeledComponent(String label, String value, boolean bold)
+    {
         JPanel panel = new JPanel(); // create panel
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
         panel.setBackground(new Color(173, 216, 230)); // background light blue
@@ -121,12 +129,13 @@ public class TablePanel extends JPanel {
     }
 
     // Filter displays
-    private JPanel createFilterPanel() {
+    private JPanel createFilterPanel()
+    {
         JPanel filterPanel = new JPanel(); // filters panel
         filterPanel.setLayout(new FlowLayout());
 
         // state filter -- combo box
-        JComboBox<String> stateFilter = new JComboBox<>();
+        stateFilter = new JComboBox<>();
         stateFilter.addItem("All States");
         stateFilter.addItem("CA");
         stateFilter.addItem("NY");
@@ -192,7 +201,7 @@ public class TablePanel extends JPanel {
         stateFilter.addItem("HI");
 
         // shape filter -- combo box
-        JComboBox<String> shapeFilter = new JComboBox<>();
+        shapeFilter = new JComboBox<>();
         shapeFilter.addItem("All Shapes");
         shapeFilter.addItem("Circle");
         shapeFilter.addItem("Triangle");
@@ -232,11 +241,26 @@ public class TablePanel extends JPanel {
 
         // apply button to trigger filter display -- uses action listener
         JButton applyFilterButton = new JButton("Apply");
-        applyFilterButton.addActionListener(e -> applyFilters(stateFilter, shapeFilter, dateFilter));
+        applyFilterButton.addActionListener(e ->
+        {
+            applyFilters(stateFilter, shapeFilter, dateFilter); // apply filters
+            updateChart();
+        });
 
         filterPanel.add(applyFilterButton); // add apply button to filterPanel
         return filterPanel;
     }
+
+    // update  chart based on the selected state/shape filters
+    private void updateChart()
+    {
+        String selectedState = (String) stateFilter.getSelectedItem();
+        String selectedShape = (String) shapeFilter.getSelectedItem();
+
+        // call func in ChartPanel
+        chartPanel.updateChart(selectedState, selectedShape);
+    }
+
 
     // ----------------------------------  Filter Logic  ---------------------------------------------------
 
@@ -246,32 +270,42 @@ public class TablePanel extends JPanel {
         // state filter logic
         // (?!) is ignoring case --> Pattern matches string --> indices is the column index
         String selectedState = (String) stateFilter.getSelectedItem();
-        if (!selectedState.equals("All States")) {
+        if (!selectedState.equals("All States"))
+        {
             filters.add(RowFilter.regexFilter("(?i)" + Pattern.quote(selectedState), 1)); // case-insensitive filter for state (column 1)
         }
 
         // shape filter logic
         // (?!) is ignoring case --> Pattern matches string --> indices is the column index
         String selectedShape = (String) shapeFilter.getSelectedItem();
-        if (!selectedShape.equals("All Shapes")) {
+        if (!selectedShape.equals("All Shapes"))
+        {
             filters.add(RowFilter.regexFilter("(?i)" + Pattern.quote(selectedShape), 2)); // case-insensitive filter for shape (column 2)
         }
 
         // apply all the filters
-        if (!filters.isEmpty()) {
+        if (!filters.isEmpty())
+        {
             RowFilter<Object, Object> compoundRowFilter = RowFilter.andFilter(filters); // combines all filters into one compound
             sorter.setRowFilter(compoundRowFilter); // sort using the compound
-        } else {
+        }
+        else
+        {
             sorter.setRowFilter(null); // remove filters if none are selected
         }
+
         // sort by date
         String selectedDate = (String) dateFilter.getSelectedItem();
-        if (selectedDate.equals("Ascending")) {
+        if (selectedDate.equals("Ascending"))
+        {
             sorter.setSortKeys(List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
-        } else if (selectedDate.equals("Descending")) {
+        }
+        else if (selectedDate.equals("Descending"))
+        {
             sorter.setSortKeys(List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
         }
-        // Update StatsPanel with the current filters
+        // update panel
         statsPanel.updateStats(selectedState, selectedShape);
     }
+
 }
